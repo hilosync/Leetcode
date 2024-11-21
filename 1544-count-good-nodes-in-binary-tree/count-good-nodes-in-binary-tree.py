@@ -12,7 +12,7 @@ class Solution:
         result = 0
         current = root
 
-        nodeStack = [(current, current.val)]
+        nodeStack = [[current, current.val]]
 
         while nodeStack:
             current, currMax = nodeStack.pop()
