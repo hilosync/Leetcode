@@ -8,30 +8,26 @@ class Solution:
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
+
+        maxDiameter = 0
+
+        def dfs(node):
+            nonlocal maxDiameter
+            if not node:
+                return 0
+            
+
+            left = dfs(node.left)
+            right = dfs(node.right)
+
+            maxDiameter = max(maxDiameter, left+right)
+
+            return max(left, right) + 1
         
-        nodeStack = [root]
-        nodeDict = {None: (0, 0)}
-
-        while nodeStack:
-            curr = nodeStack[-1]
-            if curr.left and curr.left not in nodeDict:
-                nodeStack.append(curr.left)
-                curr = curr.left
-            elif curr.right and curr.right not in nodeDict:
-                nodeStack.append(curr.right)
-                curr = curr.right
-            else:
-                curr = nodeStack.pop()
-
-                leftHeight, leftDiameter = nodeDict[curr.left]
-                rightHeight, rightDiameter = nodeDict[curr.right]
-
-                currHeight = max(leftHeight, rightHeight) + 1
-                maxDiameter = max(leftHeight + rightHeight, leftDiameter, rightDiameter)
-
-                nodeDict[curr] = (currHeight, maxDiameter)
+        dfs(root)
+        return maxDiameter
         
-        return nodeDict[root][1]
+
 
 
 
