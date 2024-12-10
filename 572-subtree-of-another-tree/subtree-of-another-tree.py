@@ -4,6 +4,8 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque
+
 class Solution:
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
         if not subRoot:
@@ -12,30 +14,40 @@ class Solution:
         if not root:
             return False
 
-        nodeStack = [root]
-        possibleStartNodes = []
+        def dfs(node, subNode):
+            if not node and not subNode:
+                return True
+            
+            if not node:
+                return False
+            if not subNode:
+                return False
+            if node.val != subNode.val:
+                return False
+            
+            return dfs(node.left, subNode.left) and dfs(node.right, subNode.right)
+
+        nodeStack = deque([root])
+
         while nodeStack:
-            curr = nodeStack.pop()
+            curr = nodeStack.popleft()
             if curr.val == subRoot.val:
-                possibleStartNodes.append(curr)
+                if dfs(curr, subRoot):
+                    return True
+            
             if curr.left:
                 nodeStack.append(curr.left)
             if curr.right:
                 nodeStack.append(curr.right)
-
-        def dfs(root, subRoot):
-            if not subRoot and not root:
-                return True
-
-            if not subRoot or not root or root.val != subRoot.val:
-                return False
-
-            return dfs(root.left, subRoot.left) and dfs(root.right, subRoot.right)
         
-        for curr in possibleStartNodes:
-            if dfs(curr, subRoot):
-                return True
         return False
+        
+
+      
+      # Loop through main tree, find all instances of the root of the sub tree
+      # for each found instance, we want to check if the trees are equal, if they are return true, if not check next instance, if no instances, return false
+
+
 
         
 
