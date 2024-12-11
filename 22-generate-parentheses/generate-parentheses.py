@@ -9,8 +9,8 @@ class Solution:
         results = []
         brackets = []
         def recursive(opens, closes):
-            if opens > closes:
-                return
+            # if opens > closes:
+            #     return
 
             if opens == closes == 0:
                 results.append("".join(brackets))
