@@ -31,6 +31,5 @@ class Solution:
                             if grid[y+1][x] == "1":
                                 grid[y+1][x] = "0"
                                 islands.append((y+1,x))
-        print(grid)
 
         return results
