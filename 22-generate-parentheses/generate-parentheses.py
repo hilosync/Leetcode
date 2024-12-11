@@ -6,36 +6,25 @@ class Node:
 
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-
-        root = Node('(')
-        def generateTree(node, opens, closes):
-            if opens > 0:
-                node.left = Node("(")
-                generateTree(node.left, opens-1, closes)
-            if closes > 0 and opens < closes:
-                node.right = Node(")")
-                generateTree(node.right, opens, closes-1)
-
-            return node
-        
-        tree = generateTree(root, n-1, n)
-
         results = []
-        def dfs(node, bracketsCombo):
-            nonlocal results
+        brackets = []
+        def recursive(opens, closes):
+            if opens > closes:
+                return
 
-            bracketsCombo = bracketsCombo + node.val
+            if opens == closes == 0:
+                results.append("".join(brackets))
+                return
 
-            if len(bracketsCombo) == 2 * n:
-                results.append(bracketsCombo)
-
-            if node.left:
-                dfs(node.left, bracketsCombo)
-            if node.right:
-                dfs(node.right, bracketsCombo)
+            if opens > 0:
+                brackets.append('(')
+                recursive(opens-1, closes)
+                brackets.pop()
+            if closes > opens:
+                brackets.append(')')
+                recursive(opens, closes-1)
+                brackets.pop()
         
-        dfs(tree, '')
+        recursive(n,n)
         return results
-
-
 
